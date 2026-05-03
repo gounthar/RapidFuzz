@@ -66,7 +66,7 @@ jobs:
           - os: linux-arm
             runs-on: ubuntu-24.04-arm
           - os: linux-riscv64
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-24.04-riscv
             archs: riscv64
           - os: windows-intel
             runs-on: windows-latest
@@ -104,14 +104,8 @@ jobs:
         shell: bash
         run: cp dist/*.tar.gz rapidfuzz.tar.gz
 
-      - name: Set up QEMU
-        if: matrix.archs == 'riscv64'
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: riscv64
-
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.4.0
+        uses: pypa/cibuildwheel@v3.4.1
         env:
           CIBW_PLATFORM: ${{ matrix.platform || 'auto' }}
           CIBW_ARCHS: ${{ matrix.archs || 'auto' }}
